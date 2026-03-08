@@ -1,0 +1,12 @@
+[build]
+  command = "npm install"
+  functions = "functions"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@whiskeysockets/baileys", "pino", "qrcode-terminal"]
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
